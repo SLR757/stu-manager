@@ -20,7 +20,7 @@ router.post('/login', function(req, res, next) {
     return;
   }
 
-  pool.query("SELECT * FROM `user` WHERE loginName=? AND password=? AND type=?",[loginName,md5(password),type],function(err,result){
+  pool.query("SELECT * FROM `users` WHERE loginName=? AND password=? AND type=?",[loginName,md5(password),type],function(err,result){
     if(err){
       res.json({code:202,message:'数据库操作失败！'});
       return;
