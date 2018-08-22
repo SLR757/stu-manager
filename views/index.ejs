@@ -1,0 +1,87 @@
+<!-- layout（）继承总模版layout.ejs中公用的视图，参数是继承过来的模版视图名称 -->
+<% layout('layout') -%>
+  <!-- form表单默认get方法 -->
+  <!-- <form action="/logout" method="POST">
+      <button id="btnLogout" type="submit">注销</button>
+    </form> -->
+
+  <!--button 类型是button时，按下回车键不会自动点击按钮 ，若是submit配合form表单按下回车键会自动调用-->
+
+  <% block('footer').append('<script src="/javascripts/index.js"></script>') %>
+  <!-- <script> -->
+    <!-- /*$(function () {
+      $('#btnLogout').click(function(){
+        $.post('/logout',function(data){
+          // console.log(data);
+          if (data.code != 200) {
+              $('#myModal .modal-body').text("注销出现异常");
+              $("#myModal").modal();
+              return;
+            }
+            location.href = "/login";
+  
+        })
+      })*/
+
+     /*   $("#btnLogout").on('click', function () {
+        // $.ajax方法是jquery校本库进行ajaxa请求底层的一个方法，像get（）,post(),grtJSON(),getScript（）等方法都是在此方法上做了进一步封装，让用户在使用这些封装方法时更方便
+        // $.ajax（）是对原生JS对象xmlHttpRequest()对象的进一步封装
+        // 请求方式常用四种方式：get（查询），post(添加)，put(编辑)，delete（删除）
+        // jQuery校本库中没有put(),delete()方法,所以在发起这两种请求时，必须使用$.ajax
+        // 可以自行封装一个put(),delete()方法，然后调用
+    $.ajax({
+          method: 'POST',
+          url: '/logout',
+          data: {},
+          success: function (data) {
+
+            if (data.code != 200) {
+              $('#myModal .modal-body').text("注销出现异常");
+              $("#myModal").modal();
+              return;
+            }
+            location.href = "/login";
+          },
+          error:function(err){
+            $('#myModal .modal-body').text(err.message);
+            $("#myModal").modal();
+            return;
+          }
+        })*/
+      
+        
+
+      // })
+
+
+
+
+
+
+      // extend扩展，特别注意自行扩展的属性和方法，不能和jquery库中已存在的属性和方法重名。为防止覆盖jQuery脚本库中属性和方法，建议命名时加项目或公司名称做前缀
+      // 扩展方式1：使用$.fn.extend()进行扩展
+      /*$.fn.extend({
+        abc:function(){
+          console.log("abc");
+        },
+        deff:function(){
+          console.log("def")
+        }
+      })
+    // 此种扩展必须先选择一个元素，再调用方法
+    $(document).abc();
+    $(document).deff();
+
+      // 方式2：使用$.extend()
+     $.extend({
+        abc:function(){
+          console.log("abc");
+        },
+        deff:function(){
+          console.log("def")
+        }
+      })
+      $.abc();
+      $.deff();*/
+    // })
+  // </script> -->
