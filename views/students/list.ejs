@@ -14,6 +14,7 @@
             margin: 5px auto;
         }
     </style>
+    <!-- 查询 -->
     <div class="panel-group" id="search" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="title">
@@ -121,6 +122,7 @@
         }
     %>
 
+    <!-- 信息列表 -->
     <div class="table-responsive">
         <table class="table table-hover table-bordered">
             <tr>
@@ -192,30 +194,73 @@
         </table>
     </div>
 
+    
     <div class="row" style="margin: 0">
+        <!-- 批量删除 -->
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 0">
             <button class="btn btn-danger" id="btnRemove">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 批量删除
             </button>
         </div>
+
+        <!-- 分页 -->
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"  style="padding-right: 0">
             <nav aria-label="Page navigation" style="float: right;">
                 <ul class="pagination" style="margin: 0;">
                     <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
+                        <% if(pageInfo.page == 1){ %>
+                            <a href="javascript:void(0)" aria-label="First">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        <%}else{%>
+                            <a href="/students/list?page=1" aria-label="First">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        <%}%> 
                     </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
+                    <li class="<%= pageInfo.page == 1 ?'disable':''%>">
+                        <% if(pageInfo.page == 1){%>
+                            <a href="javascript:void(0)" aria-label="Previous">
+                                <span aria-hidden="true">&lsaquo;</span>
+                            </a>
+                        <%}else{%>
+                            <a href="/students/list?page=<%= pageInfo.page - 1%>" aria-label="Previous">
+                                <span aria-hidden="true">&lsaquo;</span>
+                            </a>
+                        <%}%>    
+                    </li>
+
+                    <% for(var i = 0;i<pageInfo.pages.length;i++){%>
+                        <li class="<%= pageInfo.page == pageInfo.pages[i] ? 'active' : ''%>">
+                            <a href="/students/list?page=<%= pageInfo.pages[i]%>"><%= pageInfo.pages[i]%>
+                            </a>
+                        </li>
+                    <%}%>
+
+                    <li class="<%= pageInfo.page == pageInfo.totalPage ? 'disable':''%>">
+                        <% if(pageInfo.page == pageInfo.totalPage){%>
+                            <a href="javascript:void(0)" aria-label="Next">
+                                <span aria-hidden="true">&rsaquo;</span>
+                            </a>
+                        <%}else{%>
+                            <a href="/students/list?page=<%= pageInfo.page + 1%>" aria-label="Next">
+                                <span aria-hidden="true">&rsaquo;</span>
+                            </a>
+                        <%}%> 
+                    </li>
                     <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
+                        <% if(pageInfo.page == pageInfo.totalPage){%>
+                            <a href="javascript:void(0)" aria-label="Last">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+
+                        <%}else{%>
+                            <a href="/students/list?page=<%= pageInfo.totalPage%>" aria-label="Last">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        <%}%>
+                        
                     </li>
                 </ul>
             </nav>

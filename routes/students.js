@@ -4,6 +4,7 @@ var router = express.Router();
 var pool = require('../modules/db.js');
 var md5 = require('md5');
 var checkLogin = require('../modules/checkLogin.js');
+var pager = require('../modules/pager.js')
 
 router.get('/add', checkLogin, function (req, res, next) {
     var sql = `
@@ -85,6 +86,7 @@ router.get('/list', checkLogin, function (req, res, next) {
     select * from majors where status = 0;
     select * from classes where status = 0;
     select * from departments where status = 0;
+    SELECT COUNT(*) as totalCount FROM students;
     SELECT s.id,s.sno,s.name,s.sex,s.birthday,s.card,
     s.majorId,s.classId,s.departId,s.nativePlace,s.address,s.qq,
     s.phone,s.email,s.status,s.createTime,s.createUserId,s.updateTime,
@@ -162,21 +164,47 @@ router.get('/list', checkLogin, function (req, res, next) {
     if(card){
         sql += `AND s.card like '%${card}%'`;
     }
+
+    var page = req.query.page || 1;
+    page = page - 0;
+    // 每页显示条数
+    var pageSize = 10;
+    /* （page - 1）*pagesize,pagesize
+    0,10
+    10,10
+    20,10*/
+    sql += ` LIMIT ${(page -1) * pageSize},${pageSize}`;
+    
+
     pool.query(sql, function (err, result) {
         if (err) {
             res.json({ code: 201, message: "数据库操作异常！" });
             return;
         }
+        // 取当前表中数据总记录数
+        var totalCount = result[3][0].totalCount;
+        var totalPage= Math.ceil(totalCount/pageSize);
+        var pages = pager(page,totalPage);
+        console.log(totalCount);
+
         res.render('students/list', {
             title: "学生列表",
-            students: result[3],
+            students: result[4],
             majors: result[0],
             classes:result[1],
-            departs:result[2] 
+            departs:result[2],
+            pageInfo:{
+                page,//当前页
+                pages,
+                pageSize,//每页显示个数
+                totalPage,//总页数
+                totalCount//表总记录数
+            }
         })
     })
 
 })
+
 // :id 占位符,可以理解为把客户端传过来的数据放到id变量中
 router.get('/edit/:id', checkLogin, function (req, res, next) {
     var id = req.params.id;
